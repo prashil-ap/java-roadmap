@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Spring Boot Expert Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #f97316;
+    --accent2: #fbbf24;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --purple: #a855f7;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(249,115,22,0.15);
+    border: 1px solid rgba(249,115,22,0.4);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  h1 span {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .subtitle {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'Space Mono', monospace;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 36px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    animation: fadeDown 0.6s 0.3s ease both;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* PROGRESS TRACKER */
+  .progress-section {
+    margin: 40px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 4px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .progress-label span {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .progress-label strong {
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* PHASE CARDS */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 60px;
+  }
+
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .phase-card:nth-child(1) { animation-delay: 0.1s; }
+  .phase-card:nth-child(2) { animation-delay: 0.2s; }
+  .phase-card:nth-child(3) { animation-delay: 0.3s; }
+  .phase-card:nth-child(4) { animation-delay: 0.4s; }
+  .phase-card:nth-child(5) { animation-delay: 0.5s; }
+  .phase-card:nth-child(6) { animation-delay: 0.6s; }
+  .phase-card:nth-child(7) { animation-delay: 0.7s; }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  .phase-header:hover {
+    background: var(--surface2);
+  }
+
+  .phase-card.active .phase-header {
+    border-left-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .phase-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.3);
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .phase-title-wrap {
+    flex: 1;
+  }
+
+  .phase-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .phase-weeks {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .phase-toggle {
+    color: var(--muted);
+    font-size: 20px;
+    transition: transform 0.3s;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .phase-card.active .phase-toggle {
+    transform: rotate(45deg);
+    color: var(--accent);
+  }
+
+  .phase-complete-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: none;
+  }
+
+  .phase-card.completed .phase-complete-badge {
+    display: block;
+  }
+
+  .phase-card.completed .phase-header {
+    border-left-color: var(--green);
+  }
+
+  /* Phase body */
+  .phase-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .phase-card.active .phase-body {
+    display: block;
+  }
+
+  /* Topics section */
+  .topics-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .topics-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .topic-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .topic-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(249,115,22,0.08);
+  }
+
+  /* Links Table */
+  .links-section {
+    padding: 20px 24px;
+  }
+
+  .links-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .link-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+
+  .link-row:hover {
+    background: rgba(249,115,22,0.05);
+    border-color: rgba(249,115,22,0.3);
+    transform: translateX(4px);
+  }
+
+  .link-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .link-topic {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .link-source {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--accent);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 8px 14px;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .link-btn:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  .link-btn::after {
+    content: '↗';
+    font-size: 12px;
+  }
+
+  /* BOOKMARKS SECTION */
+  .bookmarks-section {
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s ease forwards;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 24px;
+    background: var(--accent);
+  }
+
+  .bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .bookmark-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bookmark-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+
+  .bookmark-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .bookmark-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.5;
+  }
+
+  .bookmark-url {
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    margin-top: 4px;
+  }
+
+  /* YOUTUBE SECTION */
+  .youtube-section {
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.9s ease forwards;
+  }
+
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .yt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: all 0.2s;
+  }
+
+  .yt-card:hover {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.05);
+    transform: translateY(-2px);
+  }
+
+  .yt-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .yt-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .yt-desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s ease forwards;
+  }
+
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer strong {
+    color: var(--accent);
+  }
+
+  /* Checkbox completion */
+  .complete-btn {
+    margin-top: 16px;
+    padding: 0 24px 20px;
+  }
+
+  .complete-btn button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .complete-btn button:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(34,197,94,0.05);
+  }
+
+  .phase-card.completed .complete-btn button {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(34,197,94,0.08);
+  }
+
+  /* Color accents per phase */
+  .phase-card[data-phase="1"] .phase-num { color: #22c55e; background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); }
+  .phase-card[data-phase="1"].active .phase-header { border-left-color: #22c55e; }
+  .phase-card[data-phase="2"] .phase-num { color: #3b82f6; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
+  .phase-card[data-phase="2"].active .phase-header { border-left-color: #3b82f6; }
+  .phase-card[data-phase="3"] .phase-num { color: #f97316; background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.3); }
+  .phase-card[data-phase="3"].active .phase-header { border-left-color: #f97316; }
+  .phase-card[data-phase="4"] .phase-num { color: #a855f7; background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.3); }
+  .phase-card[data-phase="4"].active .phase-header { border-left-color: #a855f7; }
+  .phase-card[data-phase="5"] .phase-num { color: #fbbf24; background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3); }
+  .phase-card[data-phase="5"].active .phase-header { border-left-color: #fbbf24; }
+  .phase-card[data-phase="6"] .phase-num { color: #ef4444; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); }
+  .phase-card[data-phase="6"].active .phase-header { border-left-color: #ef4444; }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .link-row { grid-template-columns: 1fr; }
+    .stats-bar { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">12-16 Week Roadmap</div>
+    <h1>Java <span>Spring Boot</span><br>Expert Plan</h1>
+    <p class="subtitle">// Tailored for 12-year PHP/Node.js Developers</p>
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
+      <div class="stat"><span class="stat-num">16</span><span class="stat-label">Weeks</span></div>
+      <div class="stat"><span class="stat-num">30+</span><span class="stat-label">Resources</span></div>
+      <div class="stat"><span class="stat-num">7</span><span class="stat-label">YouTube Channels</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Projects</span></div>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>OVERALL PROGRESS</span>
+      <strong id="progress-text">0 / 6 Phases Complete</strong>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- PHASES -->
+  <div class="phases">
+
+    <!-- PHASE 1 -->
+    <div class="phase-card" data-phase="1">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 01</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">Java Fundamentals</div>
+          <div class="phase-weeks">Weeks 1–2</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">Java Syntax & Types</span>
+            <span class="topic-tag">OOP Concepts</span>
+            <span class="topic-tag">Collections (List, Map, Set)</span>
+            <span class="topic-tag">Exception Handling</span>
+            <span class="topic-tag">Generics & Lambdas</span>
+            <span class="topic-tag">Streams API</span>
+            <span class="topic-tag">Maven / Gradle</span>
+            <span class="topic-tag">Java 8+ Features</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Java Full Course</div><div class="link-source">Telusko — YouTube</div></div>
+              <a href="https://www.youtube.com/@Telusko" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Java for Beginners</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/@amigoscode" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Java 8+ Features (Streams, Lambdas)</div><div class="link-source">Java Brains — YouTube</div></div>
+              <a href="https://www.youtube.com/@JavaBrainsChannel" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Official Java Documentation</div><div class="link-source">Oracle — docs.oracle.com</div></div>
+              <a href="https://docs.oracle.com/en/java/" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Practice Problems in Java</div><div class="link-source">LeetCode — leetcode.com</div></div>
+              <a href="https://leetcode.com" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Interactive Java Course</div><div class="link-source">Codecademy — codecademy.com</div></div>
+              <a href="https://www.codecademy.com/learn/learn-java" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Think Java (Free Book)</div><div class="link-source">Green Tea Press — greenteapress.com</div></div>
+              <a href="https://greenteapress.com/wp/think-java-2e/" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-card" data-phase="2">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 02</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">Spring Core + Spring Boot Basics</div>
+          <div class="phase-weeks">Weeks 3–4</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">IoC & Dependency Injection</span>
+            <span class="topic-tag">Spring Boot Setup</span>
+            <span class="topic-tag">@Component, @Service</span>
+            <span class="topic-tag">@Repository, @Controller</span>
+            <span class="topic-tag">@Autowired</span>
+            <span class="topic-tag">Application Properties</span>
+            <span class="topic-tag">Spring Profiles</span>
+            <span class="topic-tag">Auto-configuration</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Full Course</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=9SGDpanrc8U" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Framework Deep Dive</div><div class="link-source">Java Brains — YouTube</div></div>
+              <a href="https://www.youtube.com/@JavaBrainsChannel" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Official Spring Guides</div><div class="link-source">Spring.io — spring.io/guides</div></div>
+              <a href="https://spring.io/guides" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Project Generator</div><div class="link-source">Spring Initializr — start.spring.io</div></div>
+              <a href="https://start.spring.io" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Reference Docs</div><div class="link-source">Official — docs.spring.io</div></div>
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Projects</div><div class="link-source">Daily Code Buffer — YouTube</div></div>
+              <a href="https://www.youtube.com/@DailyCodeBuffer" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-card" data-phase="3">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 03</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">REST API + Spring Data JPA</div>
+          <div class="phase-weeks">Weeks 5–7</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">@RestController</span>
+            <span class="topic-tag">@GetMapping / @PostMapping</span>
+            <span class="topic-tag">DTOs & @RequestBody</span>
+            <span class="topic-tag">Spring Data JPA</span>
+            <span class="topic-tag">Hibernate ORM</span>
+            <span class="topic-tag">@Entity & Relationships</span>
+            <span class="topic-tag">JPQL & @Query</span>
+            <span class="topic-tag">MySQL / PostgreSQL</span>
+            <span class="topic-tag">@ControllerAdvice</span>
+            <span class="topic-tag">Bean Validation</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">REST API with Spring Boot</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=9SGDpanrc8U" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Data JPA Full Course</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=8SGI_XS5OPw" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Hibernate & JPA Deep Dive</div><div class="link-source">Thorben Janssen — thoughts-on-java.org</div></div>
+              <a href="https://thorben-janssen.com" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">JPA Relationships Guide</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/jpa-relationships" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Data JPA Official Docs</div><div class="link-source">Spring — docs.spring.io</div></div>
+              <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Baeldung — All Spring Topics</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Bean Validation Guide</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-boot-bean-validation" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-card" data-phase="4">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 04</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">Spring Security + JWT Auth</div>
+          <div class="phase-weeks">Weeks 8–9</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">Spring Security Basics</span>
+            <span class="topic-tag">JWT Authentication</span>
+            <span class="topic-tag">@PreAuthorize</span>
+            <span class="topic-tag">Role-based Access Control</span>
+            <span class="topic-tag">OAuth2 Basics</span>
+            <span class="topic-tag">BCrypt Password Encoding</span>
+            <span class="topic-tag">Security Filters</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Security Full Course</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=her_7pa0vrg" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">JWT with Spring Boot</div><div class="link-source">Daily Code Buffer — YouTube</div></div>
+              <a href="https://www.youtube.com/@DailyCodeBuffer" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Security Official Docs</div><div class="link-source">Spring — docs.spring.io</div></div>
+              <a href="https://docs.spring.io/spring-security/reference/" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Security Guide</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/security-spring" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">OAuth2 with Spring Boot</div><div class="link-source">Spring.io Guides</div></div>
+              <a href="https://spring.io/guides/tutorials/spring-boot-oauth2/" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase-card" data-phase="5">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 05</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">Advanced Spring Boot</div>
+          <div class="phase-weeks">Weeks 10–12</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">Spring Boot Actuator</span>
+            <span class="topic-tag">Redis Caching</span>
+            <span class="topic-tag">@Async Processing</span>
+            <span class="topic-tag">@Scheduled Tasks</span>
+            <span class="topic-tag">File Upload/Download</span>
+            <span class="topic-tag">Spring Mail</span>
+            <span class="topic-tag">Pagination & Sorting</span>
+            <span class="topic-tag">SLF4J + Logback</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Actuator</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-boot-actuators" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Redis Caching with Spring</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=WogMVEFKhBs" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Async in Spring Boot</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-async" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Pagination & Sorting</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-data-jpa-pagination-sorting" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">File Upload & Advanced Topics</div><div class="link-source">Daily Code Buffer — YouTube</div></div>
+              <a href="https://www.youtube.com/@DailyCodeBuffer" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Scheduled Tasks Guide</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-scheduled-tasks" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Logging in Spring Boot</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-boot-logging" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase-card" data-phase="6">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">PHASE 06</div>
+        <div class="phase-title-wrap">
+          <div class="phase-title">Microservices + DevOps</div>
+          <div class="phase-weeks">Weeks 13–16</div>
+        </div>
+        <div class="phase-complete-badge">✓ DONE</div>
+        <div class="phase-toggle">+</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-section">
+          <div class="section-label">// Topics to Cover</div>
+          <div class="topics-grid">
+            <span class="topic-tag">Microservices Architecture</span>
+            <span class="topic-tag">Spring Cloud Eureka</span>
+            <span class="topic-tag">API Gateway</span>
+            <span class="topic-tag">Feign Client</span>
+            <span class="topic-tag">Apache Kafka</span>
+            <span class="topic-tag">RabbitMQ</span>
+            <span class="topic-tag">Docker</span>
+            <span class="topic-tag">GitHub Actions CI/CD</span>
+            <span class="topic-tag">JUnit 5</span>
+            <span class="topic-tag">Mockito</span>
+          </div>
+        </div>
+        <div class="links-section">
+          <div class="section-label">// Learning Resources</div>
+          <div class="links-grid">
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Microservices with Spring Boot</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=BLlEgtp2_i8" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Cloud Full Course</div><div class="link-source">Java Techie — YouTube</div></div>
+              <a href="https://www.youtube.com/@Javatechie" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Apache Kafka with Spring</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=SqVfCyfCJqw" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">RabbitMQ with Spring</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-amqp" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Docker for Java Developers</div><div class="link-source">TechWorld with Nana — YouTube</div></div>
+              <a href="https://www.youtube.com/@TechWorldwithNana" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Docker Official Documentation</div><div class="link-source">Docker — docs.docker.com</div></div>
+              <a href="https://docs.docker.com" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">JUnit 5 + Mockito Course</div><div class="link-source">Amigoscode — YouTube</div></div>
+              <a href="https://www.youtube.com/watch?v=Geq60OVyBPg" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">Spring Boot Testing Guide</div><div class="link-source">Baeldung — baeldung.com</div></div>
+              <a href="https://www.baeldung.com/spring-boot-testing" target="_blank" class="link-btn">Open</a>
+            </div>
+            <div class="link-row">
+              <div class="link-info"><div class="link-topic">GitHub Actions CI/CD</div><div class="link-source">TechWorld with Nana — YouTube</div></div>
+              <a href="https://www.youtube.com/@TechWorldwithNana" target="_blank" class="link-btn">Open</a>
+            </div>
+          </div>
+        </div>
+        <div class="complete-btn">
+          <button onclick="markComplete(this)">Mark Phase Complete</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end phases -->
+
+  <!-- BOOKMARKS -->
+  <div class="bookmarks-section">
+    <div class="section-title">Must-Bookmark Websites</div>
+    <div class="bookmarks-grid">
+      <a href="https://www.baeldung.com" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Baeldung</div>
+        <div class="bookmark-desc">Best Spring/Java articles on the internet — your daily go-to resource</div>
+        <div class="bookmark-url">baeldung.com</div>
+      </a>
+      <a href="https://spring.io/guides" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Spring.io Guides</div>
+        <div class="bookmark-desc">Official hands-on Spring tutorials and getting-started guides</div>
+        <div class="bookmark-url">spring.io/guides</div>
+      </a>
+      <a href="https://docs.spring.io" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Spring Docs</div>
+        <div class="bookmark-desc">Official Spring framework reference documentation</div>
+        <div class="bookmark-url">docs.spring.io</div>
+      </a>
+      <a href="https://stackoverflow.com" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Stack Overflow</div>
+        <div class="bookmark-desc">Debugging and community-sourced problem solving</div>
+        <div class="bookmark-url">stackoverflow.com</div>
+      </a>
+      <a href="https://github.com/spring-projects" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Spring on GitHub</div>
+        <div class="bookmark-desc">Official Spring source code and example repositories</div>
+        <div class="bookmark-url">github.com/spring-projects</div>
+      </a>
+      <a href="https://javarevisited.blogspot.com" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Java Revisited</div>
+        <div class="bookmark-desc">Java interview prep, concepts, and career articles</div>
+        <div class="bookmark-url">javarevisited.blogspot.com</div>
+      </a>
+      <a href="https://refactoring.guru" target="_blank" class="bookmark-card">
+        <div class="bookmark-name">Refactoring Guru</div>
+        <div class="bookmark-desc">Design patterns — essential for Java interviews and architecture</div>
+        <div class="bookmark-url">refactoring.guru</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- YOUTUBE CHANNELS -->
+  <div class="youtube-section">
+    <div class="section-title">Subscribe Now — YouTube Channels</div>
+    <div class="yt-grid">
+      <a href="https://www.youtube.com/@amigoscode" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">Amigoscode</span>
+          <div class="yt-desc">Best all-around Spring Boot courses. Very practical and project-focused.</div>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@DailyCodeBuffer" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">Daily Code Buffer</span>
+          <div class="yt-desc">Real-world Spring Boot projects with clean code.</div>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@Javatechie" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">Java Techie</span>
+          <div class="yt-desc">Microservices and advanced Spring Cloud topics.</div>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@Telusko" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">Telusko</span>
+          <div class="yt-desc">Beginner-friendly Java fundamentals explained clearly.</div>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@TechWorldwithNana" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">TechWorld with Nana</span>
+          <div class="yt-desc">Docker, Kubernetes, and DevOps for Java developers.</div>
+        </div>
+      </a>
+      <a href="https://www.youtube.com/@JavaBrainsChannel" target="_blank" class="yt-card">
+        <div class="yt-icon">▶</div>
+        <div>
+          <span class="yt-name">Java Brains</span>
+          <div class="yt-desc">Deep conceptual explanations of Spring internals.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Built for your Java Spring Boot journey &nbsp;|&nbsp; <strong>12-16 weeks</strong> to expert level &nbsp;|&nbsp; Good luck! 🚀</p>
+  </footer>
+
+</div>
+
+<script>
+  function togglePhase(header) {
+    const card = header.closest('.phase-card');
+    const isActive = card.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+    // Open clicked if it wasn't active
+    if (!isActive) card.classList.add('active');
+  }
+
+  function markComplete(btn) {
+    const card = btn.closest('.phase-card');
+    card.classList.toggle('completed');
+    updateProgress();
+    // Save to localStorage
+    saveProgress();
+  }
+
+  function updateProgress() {
+    const total = 6;
+    const done = document.querySelectorAll('.phase-card.completed').length;
+    const pct = (done / total) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${done} / ${total} Phases Complete`;
+  }
+
+  function saveProgress() {
+    const completed = [];
+    document.querySelectorAll('.phase-card').forEach((card, i) => {
+      if (card.classList.contains('completed')) completed.push(i);
+    });
+    try { localStorage.setItem('springboot_progress', JSON.stringify(completed)); } catch(e) {}
+  }
+
+  function loadProgress() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('springboot_progress') || '[]');
+      const cards = document.querySelectorAll('.phase-card');
+      saved.forEach(i => { if (cards[i]) cards[i].classList.add('completed'); });
+      updateProgress();
+    } catch(e) {}
+  }
+
+  // Open first phase by default
+  document.querySelector('.phase-card').classList.add('active');
+  loadProgress();
+
+  // Animate progress bar on load
+  setTimeout(() => updateProgress(), 300);
+</script>
+</body>
+</html>
